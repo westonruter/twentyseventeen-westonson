@@ -2,6 +2,7 @@ cd "$( dirname "$0" )"
 set -e
 
 wp db export /tmp/$(date "+%Y%m%dT%H%M%S").sql
+wp post delete --force $( wp post list --post_type=attachment --format=ids )
 wp db reset --yes
 wp core install --url="http://src.wordpress-develop.dev/" --title="WordPress Develop" --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email
 wp cache flush
@@ -18,3 +19,4 @@ post3=$( wp post create --porcelain --post_title="Columbia River Gorge" --post_d
 wp media import --post_id=$post1 --featured_image ../images/gap-bluff-sydney-australia.jpg
 wp media import --post_id=$post2 --featured_image ../images/hoodoo-butte-oregon.jpg
 wp media import --post_id=$post3 --featured_image ../images/rowena-crest-oregon.jpg
+wp media import ../images/mt-hood-from-trillium-lake.jpg ../images/toronto-skyline.jpg
