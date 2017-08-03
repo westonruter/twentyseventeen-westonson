@@ -1,0 +1,37 @@
+/*
+Theme Name: Twenty Seventeen Westonson
+Description: Weston's child (son) theme of Twenty Seventeen.
+Author: Weston Ruter, XWP
+Author URI: https://weston.ruter.net/
+Version: 1.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: twentyseventeen
+Template: twentyseventeen
+
+This theme, like WordPress, is licensed under the GPL.
+Use it to make something cool, have fun, and share what you've learned with others.
+*/
+
+@import url( ../twentyseventeen/style.css );
+
+.recent-posts .hentry.has-post-thumbnail {
+	position: relative;
+}
+.recent-posts .hentry.has-post-thumbnail .wp-post-image {
+	position: absolute;
+	left: -170px;
+}
+
+@media screen and (max-width: 48em) {
+	.recent-posts .hentry.has-post-thumbnail .wp-post-image {
+		position: static;;
+		left: auto;
+		float: right;
+		margin-left: 2em;
+		margin-bottom: 2em;
+	}
+	.recent-posts .hentry.has-post-thumbnail .featured-image-thumbnail ~ .entry-title {
+		clear: none;
+	}
+}
