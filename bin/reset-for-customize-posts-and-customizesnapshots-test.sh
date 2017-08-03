@@ -9,7 +9,7 @@ wp cache flush
 wp option set fresh_site 0
 wp post delete $( wp post list --post_type=post --format=ids )
 wp theme activate twentyseventeen-westonson
-wp plugin activate customize-snapshots customize-posts
+wp plugin activate customize-snapshots customize-posts customizer-browser-history
 wp --user=1 eval-file load-starter-content.php
 
 post1=$( wp post create --porcelain --post_title="Gap Bluff" --post_date="2017-06-01" --post_status=publish --post_content="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc commodo condimentum odio. Suspendisse ultrices massa arcu, sed dapibus est pretium eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit." )
