@@ -15,7 +15,7 @@ do_action( 'customize_register', $wp_customize );
 
 $wp_customize->import_theme_starter_content();
 $r = $wp_customize->save_changeset_post( array(
-	'title' => 'Configured theme with starter content',
+	'title' => 'Configure theme with starter content',
 	'status' => 'publish',
 ) );
 
