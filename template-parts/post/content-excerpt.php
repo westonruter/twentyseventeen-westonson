@@ -4,14 +4,8 @@
  *
  * Used in Search Results and for Recent Posts in Front Page panels.
  *
- * @link https://codex.wordpress.org/Template_Hierarchy
- *
- * @package WordPress
- * @subpackage Twenty_Seventeen
- * @since 1.0
- * @version 1.2
+ * @package Twenty_Seventeen_Westonson
  */
-
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
