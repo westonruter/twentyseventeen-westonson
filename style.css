@@ -35,20 +35,3 @@ Use it to make something cool, have fun, and share what you've learned with othe
 		clear: none;
 	}
 }
-
-/*
- * Due to lack of child selector in `.twentyseventeen-panel .customize-partial-edit-shortcut button`.
- *
- * This won't be needed once WP Core #41557 is merged.
- */
-.widget .customize-partial-edit-shortcut button,
-.customize-partial-edit-shortcut button {
-	left: -30px !important;
-	top: 2px !important;
-}
-
-/* Add some space around the visual edit shortcut buttons. */
-.twentyseventeen-panel > .customize-partial-edit-shortcut > button {
-	top: 30px !important;
-	left: 30px !important;
-}
