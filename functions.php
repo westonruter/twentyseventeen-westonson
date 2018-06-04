@@ -5,6 +5,12 @@
  * @package Twenty_Seventeen_Westonson
  */
 
+add_action( 'after_setup_theme', function() {
+	add_theme_support( 'amp', array(
+		'template_dir' => './',
+	) );
+} );
+
 define( 'TWENTYSEVENTEEN_WESTONSON_DEFAULT_FOOTER_SITE_INFO', sprintf(
 	'<a href="%s">%s</a>',
 	esc_url( __( 'https://wordpress.org/', 'twentyseventeen' ) ),
