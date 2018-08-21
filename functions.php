@@ -12,6 +12,17 @@ define( 'TWENTYSEVENTEEN_WESTONSON_DEFAULT_FOOTER_SITE_INFO', sprintf(
 	sprintf( __( 'Proudly powered by %s', 'twentyseventeen' ), 'WordPress' )
 ) );
 
+// Make parent theme's stylesheet a dependency for this theme's stylesheet.
+add_action( 'wp_enqueue_scripts', function() {
+	wp_register_style(
+		'twentyseventeen-parent-style',
+		trailingslashit( get_template_directory_uri() ) . 'style.css',
+		array(),
+		false
+	);
+	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
+}, 20 );
+
 add_action( 'customize_register', function( WP_Customize_Manager $wp_customize ) {
 	$wp_customize->add_setting( 'footer_site_info', array(
 		'type'              => 'option',
