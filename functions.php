@@ -7,7 +7,7 @@
 
 add_action( 'after_setup_theme', function() {
 	add_theme_support( 'amp', array(
-		'template_dir' => './',
+		'paired' => true,
 	) );
 } );
 
