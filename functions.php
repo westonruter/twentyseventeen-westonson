@@ -11,6 +11,8 @@ add_action( 'after_setup_theme', function() {
 	) );
 } );
 
+add_filter( 'widget_text_content', 'wp_make_content_images_responsive' );
+
 define( 'TWENTYSEVENTEEN_WESTONSON_DEFAULT_FOOTER_SITE_INFO', sprintf(
 	'<a href="%s">%s</a>',
 	esc_url( __( 'https://wordpress.org/', 'twentyseventeen' ) ),
