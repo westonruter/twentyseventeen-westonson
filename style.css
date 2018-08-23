@@ -33,3 +33,12 @@ Use it to make something cool, have fun, and share what you've learned with othe
 		clear: none;
 	}
 }
+
+/* Style error details on the 500.php template */
+#error-details > iframe {
+	width: 100%;
+}
+#error-details > summary {
+	user-select: none;
+	cursor: pointer;
+}

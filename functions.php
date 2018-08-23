@@ -133,3 +133,106 @@ add_action( 'customize_register', function( WP_Customize_Manager $wp_customize )
 		},
 	) );
 } );
+
+// Make it easier to test changes to the offline.php template by bumping the precache entry revision by the modified time.
+add_filter( 'wp_offline_error_precache_entry', function( $entry ) {
+	if ( WP_DEBUG && is_array( $entry ) ) {
+		$entry['revision'] .= '-' . filemtime( __DIR__ . '/offline.php' );
+	}
+	return $entry;
+} );
+
+// Make it easier to test changes to the 500.php template by bumping the precache entry revision by the modified time.
+add_filter( 'wp_server_error_precache_entry', function( $entry ) {
+	if ( WP_DEBUG && is_array( $entry ) ) {
+		$entry['revision'] .= '-' . filemtime( __DIR__ . '/500.php' );
+	}
+	return $entry;
+} );
+
+// Remove the has-sidebar class from the 500.php and offline.php templates since they do not have the sidebar.
+add_filter( 'body_class', function( $body_classes ) {
+	if ( ( function_exists( 'is_500' ) && is_500() ) || ( function_exists( 'is_offline' ) && is_offline() ) ) {
+		$body_classes = array_diff( $body_classes, array( 'has-sidebar' ) );
+	}
+	return $body_classes;
+}, 11 );
+
+/**
+ * Get style handles that should be pre-cached.
+ *
+ * @return array Style handles.
+ */
+function twentyseventeen_get_precached_styles() {
+	return array(
+		'wp-block-library', // From Gutenberg.
+		'twentyseventeen-parent-style',
+		'twentyseventeen-style',
+	);
+}
+
+/**
+ * Get script handles that are pre-cached.
+ *
+ * @return array Script handles.
+ */
+function twentyseventeen_get_precached_scripts() {
+	return array(
+		'jquery-core',
+		'jquery-migrate',
+		'twentyseventeen-skip-link-focus-fix',
+		'twentyseventeen-navigation',
+		'twentyseventeen-global',
+		'jquery-scrollto',
+	);
+}
+
+// Dequeue all enqueued scripts from the offline page, except for those which are precached.
+add_filter( 'print_scripts_array', function( $handles ) {
+	$is_offline = ( function_exists( 'is_offline' ) && is_offline() );
+	if ( $is_offline ) {
+		$handles = array_intersect( twentyseventeen_get_precached_scripts(), $handles );
+	}
+	return $handles;
+} );
+
+// Dequeue all enqueued styles from the offline page, except for those which are precached.
+add_filter( 'print_styles_array', function( $handles ) {
+	$is_offline = ( function_exists( 'is_offline' ) && is_offline() );
+	if ( $is_offline ) {
+		$handles = array_intersect(
+			array_merge(
+				twentyseventeen_get_precached_styles(),
+				array( 'twentyseventeen-fonts' ) // Not pre-cached but runtime-cached.
+			),
+			$handles
+		);
+	}
+	return $handles;
+} );
+
+// Precache scripts, styles, custom logo, and custom header; do runtime caching of fonts.
+add_action( 'wp_front_service_worker', function( WP_Service_Workers $service_workers ) {
+	$service_workers->register_precached_site_icon();
+	$service_workers->register_precached_custom_logo();
+	$service_workers->register_precached_custom_header();
+	$service_workers->register_precached_scripts( twentyseventeen_get_precached_scripts() );
+	$service_workers->register_precached_styles( twentyseventeen_get_precached_styles() );
+
+	// Use cache-first runtime caching for Google Fonts. Ported from <https://gist.github.com/sebastianbenz/1d449dee039202d8b7464f1131eae449>.
+	$service_workers->register_cached_route(
+		'https://fonts.(?:googleapis|gstatic).com/(.*)',
+		WP_Service_Workers::STRATEGY_CACHE_FIRST,
+		array(
+			'cacheName' => 'twentyseventeen-westonson-fonts',
+			'plugins'   => array(
+				'cacheableResponse' => array(
+					'statuses' => array( 0, 200 ),
+				),
+				'expiration'        => array(
+					'maxEntries' => 30,
+				),
+			),
+		)
+	);
+} );
