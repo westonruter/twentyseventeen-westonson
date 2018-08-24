@@ -134,22 +134,6 @@ add_action( 'customize_register', function( WP_Customize_Manager $wp_customize )
 	) );
 } );
 
-// Make it easier to test changes to the offline.php template by bumping the precache entry revision by the modified time.
-add_filter( 'wp_offline_error_precache_entry', function( $entry ) {
-	if ( WP_DEBUG && is_array( $entry ) ) {
-		$entry['revision'] .= '-' . filemtime( __DIR__ . '/offline.php' );
-	}
-	return $entry;
-} );
-
-// Make it easier to test changes to the 500.php template by bumping the precache entry revision by the modified time.
-add_filter( 'wp_server_error_precache_entry', function( $entry ) {
-	if ( WP_DEBUG && is_array( $entry ) ) {
-		$entry['revision'] .= '-' . filemtime( __DIR__ . '/500.php' );
-	}
-	return $entry;
-} );
-
 // Remove the has-sidebar class from the 500.php and offline.php templates since they do not have the sidebar.
 add_filter( 'body_class', function( $body_classes ) {
 	if ( ( function_exists( 'is_500' ) && is_500() ) || ( function_exists( 'is_offline' ) && is_offline() ) ) {
