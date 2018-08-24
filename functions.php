@@ -101,7 +101,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'twentyseventeen-parent-style',
 		trailingslashit( get_template_directory_uri() ) . 'style.css',
 		array(),
-		false
+		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
 }, 20 );
