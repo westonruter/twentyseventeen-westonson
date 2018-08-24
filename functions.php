@@ -158,73 +158,34 @@ add_filter( 'body_class', function( $body_classes ) {
 	return $body_classes;
 }, 11 );
 
-/**
- * Get style handles that should be pre-cached.
- *
- * @return array Style handles.
- */
-function twentyseventeen_get_precached_styles() {
-	return array(
+// Mark scripts and styles which will be precached. Any dependencies of these scripts will be automatically precached.
+add_action( 'wp_enqueue_scripts', function() {
+	$precached_styles = array(
 		'wp-block-library', // From Gutenberg.
 		'twentyseventeen-parent-style',
 		'twentyseventeen-style',
 	);
-}
+	foreach ( $precached_styles as $handle ) {
+		wp_style_add_data( $handle, 'precache', true );
+	}
 
-/**
- * Get script handles that are pre-cached.
- *
- * @return array Script handles.
- */
-function twentyseventeen_get_precached_scripts() {
-	return array(
-		'jquery-core',
-		'jquery-migrate',
+	$precached_scripts = array(
 		'twentyseventeen-skip-link-focus-fix',
 		'twentyseventeen-navigation',
 		'twentyseventeen-global',
-		'jquery-scrollto',
 	);
-}
-
-// Dequeue all enqueued scripts from the offline page, except for those which are precached.
-add_filter( 'print_scripts_array', function( $handles ) {
-	$is_offline = ( function_exists( 'is_offline' ) && is_offline() );
-	if ( $is_offline ) {
-		$handles = array_intersect( twentyseventeen_get_precached_scripts(), $handles );
+	foreach ( $precached_scripts as $handle ) {
+		wp_script_add_data( $handle, 'precache', true );
 	}
-	return $handles;
-} );
+}, PHP_INT_MAX );
 
-// Dequeue all enqueued styles from the offline page, except for those which are precached.
-add_filter( 'print_styles_array', function( $handles ) {
-	$is_offline = ( function_exists( 'is_offline' ) && is_offline() );
-	if ( $is_offline ) {
-		$handles = array_intersect(
-			array_merge(
-				twentyseventeen_get_precached_styles(),
-				array( 'twentyseventeen-fonts' ) // Not pre-cached but runtime-cached.
-			),
-			$handles
-		);
-	}
-	return $handles;
-} );
-
-// Precache scripts, styles, custom logo, and custom header; do runtime caching of fonts.
+// Add runtime caching of fonts. Use cache-first runtime caching for Google Fonts. Ported from <https://gist.github.com/sebastianbenz/1d449dee039202d8b7464f1131eae449>.
 add_action( 'wp_front_service_worker', function( WP_Service_Workers $service_workers ) {
-	$service_workers->register_precached_site_icon();
-	$service_workers->register_precached_custom_logo();
-	$service_workers->register_precached_custom_header();
-	$service_workers->register_precached_scripts( twentyseventeen_get_precached_scripts() );
-	$service_workers->register_precached_styles( twentyseventeen_get_precached_styles() );
-
-	// Use cache-first runtime caching for Google Fonts. Ported from <https://gist.github.com/sebastianbenz/1d449dee039202d8b7464f1131eae449>.
 	$service_workers->register_cached_route(
 		'https://fonts.(?:googleapis|gstatic).com/(.*)',
 		WP_Service_Workers::STRATEGY_CACHE_FIRST,
 		array(
-			'cacheName' => 'twentyseventeen-westonson-fonts',
+			'cacheName' => 'twentyseventeen-fonts',
 			'plugins'   => array(
 				'cacheableResponse' => array(
 					'statuses' => array( 0, 200 ),

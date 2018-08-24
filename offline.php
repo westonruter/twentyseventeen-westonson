@@ -10,9 +10,6 @@
 // Prevent showing nav menus.
 add_filter( 'has_nav_menu', '__return_false' );
 
-// Remove other assets not available offline.
-remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-
 get_header(); ?>
 
 <div class="wrap">
