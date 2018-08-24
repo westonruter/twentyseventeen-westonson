@@ -162,22 +162,3 @@ add_action( 'wp_enqueue_scripts', function() {
 		wp_script_add_data( $handle, 'precache', true );
 	}
 }, PHP_INT_MAX );
-
-// Add runtime caching of fonts. Use cache-first runtime caching for Google Fonts. Ported from <https://gist.github.com/sebastianbenz/1d449dee039202d8b7464f1131eae449>.
-add_action( 'wp_front_service_worker', function( WP_Service_Workers $service_workers ) {
-	$service_workers->register_cached_route(
-		'https://fonts.(?:googleapis|gstatic).com/(.*)',
-		WP_Service_Workers::STRATEGY_CACHE_FIRST,
-		array(
-			'cacheName' => 'twentyseventeen-fonts',
-			'plugins'   => array(
-				'cacheableResponse' => array(
-					'statuses' => array( 0, 200 ),
-				),
-				'expiration'        => array(
-					'maxEntries' => 30,
-				),
-			),
-		)
-	);
-} );
