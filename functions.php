@@ -20,6 +20,76 @@ define( 'TWENTYSEVENTEEN_WESTONSON_DEFAULT_FOOTER_SITE_INFO', sprintf(
 	sprintf( __( 'Proudly powered by %s', 'twentyseventeen' ), 'WordPress' )
 ) );
 
+/**
+ * Print image preload link for attachment.
+ *
+ * @param string|int|WP_Post $image Image URL or attachment.
+ * @param string|array|null  $size  Image size.
+ */
+function twentyseventeen_westonson_print_preload_image_link( $image, $size = null ) {
+	$attachment = null;
+	$image_meta = null;
+	if ( is_string( $image ) ) {
+		$src = $image;
+	} else {
+		$attachment = get_post( $image );
+		if ( ! $attachment ) {
+			return;
+		}
+
+		$image_src = wp_get_attachment_image_src( $attachment->ID, $size );
+		if ( ! $image_src ) {
+			return;
+		}
+
+		list( $src, $width, $height ) = $image_src;
+
+		$size = array( absint( $width ), absint( $height ) );
+
+		$image_meta = wp_get_attachment_metadata( $attachment->ID );
+	}
+
+	printf( '<link rel="preload" as="image" href="%s"', esc_url( $src ) );
+
+	if ( $attachment && is_array( $image_meta ) && is_array( $size ) ) {
+		$srcset = wp_calculate_image_srcset( $size, $src, $image_meta, $attachment->ID );
+		if ( $srcset ) {
+			printf( ' imgsrcset="%s"', esc_attr( $srcset ) );
+		}
+		$sizes = wp_calculate_image_sizes( $size, $src, $image_meta, $attachment->ID );
+		if ( $sizes ) {
+			printf( ' imgsizes="%s"', esc_attr( $sizes ) );
+		}
+	}
+	echo ">\n";
+}
+
+// Preload stuff.
+add_action( 'wp_head', function() {
+	global $wp_query;
+
+	// Preload Custom Logo.
+	if ( current_theme_supports( 'custom-logo' ) && get_theme_mod( 'custom_logo' ) ) {
+		twentyseventeen_westonson_print_preload_image_link( (int) get_theme_mod( 'custom_logo' ), 'full' );
+	}
+
+	// Preload Featured Image.
+	if ( isset( $wp_query->posts[0] ) && has_post_thumbnail( $wp_query->posts[0] ) ) {
+		twentyseventeen_westonson_print_preload_image_link( (int) get_post_thumbnail_id( $wp_query->posts[0] ), 'post-thumbnail' );
+	}
+
+	// Preload Custom Header.
+	if ( current_theme_supports( 'custom-header' ) && get_custom_header() && get_custom_header()->url ) {
+		$custom_header = get_custom_header();
+		twentyseventeen_westonson_print_preload_image_link( $custom_header->attachment_id ? $custom_header->attachment_id : $custom_header->url, array( $custom_header->width, $custom_header->height ) );
+	}
+
+	// Preload Custom Background.
+	if ( current_theme_supports( 'custom-background' ) && get_background_image() ) {
+		twentyseventeen_westonson_print_preload_image_link( get_background_image() );
+	}
+}, 1 );
+
 // Make parent theme's stylesheet a dependency for this theme's stylesheet.
 add_action( 'wp_enqueue_scripts', function() {
 	wp_register_style(
