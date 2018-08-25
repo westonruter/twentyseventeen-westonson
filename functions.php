@@ -51,8 +51,7 @@ function twentyseventeen_westonson_print_preload_image_link( $image, $size = nul
 
 	printf( '<link rel="preload" as="image" href="%s"', esc_url( $src ) );
 
-	$is_amp_endpoint = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint(); // Because imgsrcset and imgsizes aren't allowed yet (and they aren't even implemented yet either for that matter).
-	if ( $attachment && is_array( $image_meta ) && is_array( $size ) && ! $is_amp_endpoint ) {
+	if ( $attachment && is_array( $image_meta ) && is_array( $size ) ) {
 		$srcset = wp_calculate_image_srcset( $size, $src, $image_meta, $attachment->ID );
 		if ( $srcset ) {
 			printf( ' imgsrcset="%s"', esc_attr( $srcset ) );
@@ -68,6 +67,11 @@ function twentyseventeen_westonson_print_preload_image_link( $image, $size = nul
 // Preload stuff.
 add_action( 'wp_head', function() {
 	global $wp_query;
+
+	// Since link[imgsizes] and link[imgsrcset] arent supported yet, preloading images can actually waste bandwidth by requesting a URL that isn't used.
+	if ( ! isset( $_GET['try_image_preloads'] ) ) {
+		return;
+	}
 
 	// Preload Custom Logo.
 	if ( current_theme_supports( 'custom-logo' ) && get_theme_mod( 'custom_logo' ) ) {
