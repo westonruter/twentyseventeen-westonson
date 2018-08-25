@@ -162,3 +162,25 @@ add_action( 'wp_enqueue_scripts', function() {
 		wp_script_add_data( $handle, 'precache', true );
 	}
 }, PHP_INT_MAX );
+
+// Add offline template to list of templates in AMP.
+add_filter( 'amp_supportable_templates', function( $supportable_templates ) {
+	$supportable_templates['is_offline'] = array(
+		'label' => __( 'Offline', 'twentyseventeen-westonson' ),
+	);
+	return $supportable_templates;
+} );
+
+/*
+ * As alternative to precaching scripts for offline page, just use the AMP version instead.
+ * This has benefit of automatically excluding other scripts enqueued by plugins.
+ */
+if ( function_exists( 'is_amp_endpoint' ) ) {
+	add_filter( 'wp_offline_error_precache_entry', function( $entry ) {
+		$supportable_templates = AMP_Theme_Support::get_supportable_templates();
+		if ( ! amp_is_canonical() && ! empty( $supportable_templates['is_offline']['supported'] ) && is_array( $entry ) ) {
+			$entry['url'] = add_query_arg( amp_get_slug(), '', $entry['url'] );
+		}
+		return $entry;
+	} );
+}
