@@ -51,7 +51,8 @@ function twentyseventeen_westonson_print_preload_image_link( $image, $size = nul
 
 	printf( '<link rel="preload" as="image" href="%s"', esc_url( $src ) );
 
-	if ( $attachment && is_array( $image_meta ) && is_array( $size ) ) {
+	$is_amp_endpoint = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint(); // Because imgsrcset and imgsizes aren't allowed yet (and they aren't even implemented yet either for that matter).
+	if ( $attachment && is_array( $image_meta ) && is_array( $size ) && ! $is_amp_endpoint ) {
 		$srcset = wp_calculate_image_srcset( $size, $src, $image_meta, $attachment->ID );
 		if ( $srcset ) {
 			printf( ' imgsrcset="%s"', esc_attr( $srcset ) );
