@@ -165,9 +165,11 @@ add_action( 'wp_enqueue_scripts', function() {
 
 // Add offline template to list of templates in AMP.
 add_filter( 'amp_supportable_templates', function( $supportable_templates ) {
-	$supportable_templates['is_offline'] = array(
-		'label' => __( 'Offline', 'twentyseventeen-westonson' ),
-	);
+	if ( function_exists( 'is_offline' ) ) {
+		$supportable_templates['is_offline'] = array(
+			'label' => __( 'Offline', 'twentyseventeen-westonson' ),
+		);
+	}
 	return $supportable_templates;
 } );
 
