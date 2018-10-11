@@ -101,7 +101,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'twentyseventeen-parent-style',
 		trailingslashit( get_template_directory_uri() ) . 'style.css',
 		array(),
-		false
+		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
 }, 20 );
@@ -133,3 +133,56 @@ add_action( 'customize_register', function( WP_Customize_Manager $wp_customize )
 		},
 	) );
 } );
+
+// Remove the has-sidebar class from the 500.php and offline.php templates since they do not have the sidebar.
+add_filter( 'body_class', function( $body_classes ) {
+	if ( ( function_exists( 'is_500' ) && is_500() ) || ( function_exists( 'is_offline' ) && is_offline() ) ) {
+		$body_classes = array_diff( $body_classes, array( 'has-sidebar' ) );
+	}
+	return $body_classes;
+}, 11 );
+
+// Mark scripts and styles which will be precached. Any dependencies of these scripts will be automatically precached.
+add_action( 'wp_enqueue_scripts', function() {
+	$precached_styles = array(
+		'wp-block-library', // From Gutenberg.
+		'twentyseventeen-parent-style',
+		'twentyseventeen-style',
+	);
+	foreach ( $precached_styles as $handle ) {
+		wp_style_add_data( $handle, 'precache', true );
+	}
+
+	$precached_scripts = array(
+		'twentyseventeen-skip-link-focus-fix',
+		'twentyseventeen-navigation',
+		'twentyseventeen-global',
+	);
+	foreach ( $precached_scripts as $handle ) {
+		wp_script_add_data( $handle, 'precache', true );
+	}
+}, PHP_INT_MAX );
+
+// Add offline template to list of templates in AMP.
+add_filter( 'amp_supportable_templates', function( $supportable_templates ) {
+	if ( function_exists( 'is_offline' ) ) {
+		$supportable_templates['is_offline'] = array(
+			'label' => __( 'Offline', 'twentyseventeen-westonson' ),
+		);
+	}
+	return $supportable_templates;
+} );
+
+/*
+ * As alternative to precaching scripts for offline page, just use the AMP version instead.
+ * This has benefit of automatically excluding other scripts enqueued by plugins.
+ */
+if ( function_exists( 'is_amp_endpoint' ) ) {
+	add_filter( 'wp_offline_error_precache_entry', function( $entry ) {
+		$supportable_templates = AMP_Theme_Support::get_supportable_templates();
+		if ( ! amp_is_canonical() && ! empty( $supportable_templates['is_offline']['supported'] ) && is_array( $entry ) ) {
+			$entry['url'] = add_query_arg( amp_get_slug(), '', $entry['url'] );
+		}
+		return $entry;
+	} );
+}

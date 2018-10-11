@@ -3,7 +3,7 @@ Theme Name: Twenty Seventeen Westonson
 Description: Weston's child (son) theme of Twenty Seventeen.
 Author: Weston Ruter, XWP
 Author URI: https://weston.ruter.net/
-Version: 1.0
+Version: 1.1
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: twentyseventeen
@@ -32,4 +32,13 @@ Use it to make something cool, have fun, and share what you've learned with othe
 	.recent-posts .hentry.has-post-thumbnail .featured-image-thumbnail ~ .entry-title {
 		clear: none;
 	}
+}
+
+/* Style error details on the 500.php template */
+#error-details > iframe {
+	width: 100%;
+}
+#error-details > summary {
+	user-select: none;
+	cursor: pointer;
 }
