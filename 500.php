@@ -19,20 +19,22 @@ get_header(); ?>
 				</header><!-- .page-header -->
 				<div class="page-content">
 					<p><?php esc_html_e( 'Something prevented the page from being rendered. Please try again.', 'twentyseventeen-westonson' ); ?></p>
-					<details id="error-details" hidden>
-						<summary><?php esc_html_e( 'More details', 'twentyseventeen-westonson' ); ?></summary>
-						<iframe srcdoc=""></iframe>
-						<script>
-						function renderErrorDetails( data ) {
-							if ( data.bodyText.trim().length ) {
-								const details = document.getElementById( 'error-details' );
-								details.querySelector( 'iframe' ).srcdoc = data.bodyText;
-								details.hidden = false;
+					<?php if ( ! ( function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ) ) : ?>
+						<details id="error-details" hidden>
+							<summary><?php esc_html_e( 'More details', 'twentyseventeen-westonson' ); ?></summary>
+							<iframe srcdoc=""></iframe>
+							<script>
+							function renderErrorDetails( data ) {
+								if ( data.bodyText.trim().length ) {
+									const details = document.getElementById( 'error-details' );
+									details.querySelector( 'iframe' ).srcdoc = data.bodyText;
+									details.hidden = false;
+								}
 							}
-						}
-						</script>
-						<?php wp_print_service_worker_error_details_script( 'renderErrorDetails' ); ?>
-					</details>
+							</script>
+							<?php wp_print_service_worker_error_details_script( 'renderErrorDetails' ); ?>
+						</details>
+					<?php endif; ?>
 				</div><!-- .page-content -->
 			</section><!-- .error-500 -->
 		</main><!-- #main -->
