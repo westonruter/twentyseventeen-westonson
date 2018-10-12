@@ -5,11 +5,11 @@
  * @package Twenty_Seventeen_Westonson
  */
 
-add_action( 'after_setup_theme', function() {
-	add_theme_support( 'amp', array(
-		'paired' => true,
-	) );
-} );
+add_theme_support( 'amp', array(
+	'paired' => false, // Needed in order to support service_worker_streaming.
+) );
+
+add_theme_support( 'service_worker_streaming' );
 
 add_filter( 'widget_text_content', 'wp_make_content_images_responsive' );
 
