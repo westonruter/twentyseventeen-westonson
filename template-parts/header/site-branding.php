@@ -20,6 +20,11 @@ if ( ! class_exists( 'WP_Service_Worker_Navigation_Routing_Component' ) ) {
 if ( WP_Service_Worker_Navigation_Routing_Component::is_streaming_header() ) {
 	?>
 	<style>
+		#stream-loading-progressbar {
+			position: absolute;
+			bottom: 0;
+		}
+
 		@-webkit-keyframes primary-indeterminate-translate {
 			0% {-webkit-transform: translateX(0);transform: translateX(0)}
 			20% {-webkit-animation-timing-function: cubic-bezier(.5, 0, .70173, .49582);animation-timing-function: cubic-bezier(.5, 0, .70173, .49582);-webkit-transform: translateX(0);transform: translateX(0)}
@@ -116,5 +121,5 @@ if ( WP_Service_Worker_Navigation_Routing_Component::is_streaming_header() ) {
 
 // This function is called in requests both for the header stream fragment and the body stream fragment, thus no check for is_streaming_header.
 WP_Service_Worker_Navigation_Routing_Component::print_stream_boundary(
-	'<div role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate"><div class="mdc-linear-progress__buffering-dots"></div><div class="mdc-linear-progress__buffer"></div><div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar"><span class="mdc-linear-progress__bar-inner"></span></div><div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar"><span class="mdc-linear-progress__bar-inner"></span></div></div>'
+	'<div id="stream-loading-progressbar" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate"><div class="mdc-linear-progress__buffering-dots"></div><div class="mdc-linear-progress__buffer"></div><div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar"><span class="mdc-linear-progress__bar-inner"></span></div><div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar"><span class="mdc-linear-progress__bar-inner"></span></div></div>'
 );
