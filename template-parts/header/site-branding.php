@@ -120,6 +120,6 @@ if ( WP_Service_Worker_Navigation_Routing_Component::is_streaming_header() ) {
 }
 
 // This function is called in requests both for the header stream fragment and the body stream fragment, thus no check for is_streaming_header.
-WP_Service_Worker_Navigation_Routing_Component::print_stream_boundary(
+WP_Service_Worker_Navigation_Routing_Component::do_stream_boundary(
 	'<div id="stream-loading-progressbar" role="progressbar" class="mdc-linear-progress mdc-linear-progress--indeterminate"><div class="mdc-linear-progress__buffering-dots"></div><div class="mdc-linear-progress__buffer"></div><div class="mdc-linear-progress__bar mdc-linear-progress__primary-bar"><span class="mdc-linear-progress__bar-inner"></span></div><div class="mdc-linear-progress__bar mdc-linear-progress__secondary-bar"><span class="mdc-linear-progress__bar-inner"></span></div></div>'
 );
