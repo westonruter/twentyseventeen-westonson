@@ -24,6 +24,7 @@ add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
 			wp_json_encode(
 				// Put everything here that can cause the streaming header to vary.
 				array(
+					'v1',
 					home_url( '/' ),
 					get_bloginfo( 'name' ),
 					get_bloginfo( 'description' ),

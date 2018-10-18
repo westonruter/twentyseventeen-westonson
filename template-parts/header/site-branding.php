@@ -80,7 +80,7 @@ if ( WP_Service_Worker_Navigation_Routing_Component::is_streaming_header() ) {
 			44.15% {-webkit-animation-timing-function: cubic-bezier(.25776, -.00316, .21176, 1.38179);animation-timing-function: cubic-bezier(.25776, -.00316, .21176, 1.38179);-webkit-transform: scaleX(.72796);transform: scaleX(.72796)}
 			to {-webkit-transform: scaleX(.08);transform: scaleX(.08)}
 		}
-		.mdc-linear-progress {position: relative;width: 100%;height: 4px;-webkit-transform: translateZ(0);transform: translateZ(0);-webkit-transition: opacity .25s cubic-bezier(.4, 0, .6, 1) 0ms;-o-transition: opacity .25s 0ms cubic-bezier(.4, 0, .6, 1);transition: opacity .25s cubic-bezier(.4, 0, .6, 1) 0ms;overflow: hidden}
+		.mdc-linear-progress {position: relative;width: 100%;height: 8px;-webkit-transform: translateZ(0);transform: translateZ(0);-webkit-transition: opacity .25s cubic-bezier(.4, 0, .6, 1) 0ms;-o-transition: opacity .25s 0ms cubic-bezier(.4, 0, .6, 1);transition: opacity .25s cubic-bezier(.4, 0, .6, 1) 0ms;overflow: hidden}
 
 		.mdc-linear-progress__bar {-webkit-transform-origin: top left;-ms-transform-origin: top left;transform-origin: top left;-webkit-transition: -webkit-transform .25s cubic-bezier(.4, 0, .6, 1) 0ms;transition: -webkit-transform .25s cubic-bezier(.4, 0, .6, 1) 0ms;-o-transition: transform .25s 0ms cubic-bezier(.4, 0, .6, 1);transition: transform .25s cubic-bezier(.4, 0, .6, 1) 0ms;transition: transform .25s cubic-bezier(.4, 0, .6, 1) 0ms, -webkit-transform .25s cubic-bezier(.4, 0, .6, 1) 0ms}
 
