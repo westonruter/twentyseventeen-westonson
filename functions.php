@@ -11,12 +11,6 @@ add_theme_support( 'amp', array(
 
 add_theme_support( 'service_worker_streaming' );
 
-if ( class_exists( 'WP_Service_Worker_Caching_Routes' ) ) {
-	add_filter( 'wp_service_worker_navigation_caching_strategy', function() {
-		return WP_Service_Worker_Caching_Routes::STRATEGY_STALE_WHILE_REVALIDATE;
-	} );
-}
-
 // Make sure the precached streaming header varies by the header logo and header image.
 add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
 	if ( isset( $entry['revision'] ) ) {
