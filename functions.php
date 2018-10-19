@@ -5,11 +5,34 @@
  * @package Twenty_Seventeen_Westonson
  */
 
-add_action( 'after_setup_theme', function() {
-	add_theme_support( 'amp', array(
-		'paired' => true,
-	) );
+add_theme_support( 'amp', array(
+	'paired' => false, // Needed in order to support service_worker_streaming.
+) );
+
+add_theme_support( 'service_worker_streaming' );
+
+// Make sure the precached streaming header varies by the header logo and header image.
+add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
+	if ( isset( $entry['revision'] ) ) {
+		$entry['revision'] .= md5(
+			wp_json_encode(
+				// Put everything here that can cause the streaming header to vary.
+				array(
+					'v1',
+					home_url( '/' ),
+					get_bloginfo( 'name' ),
+					get_bloginfo( 'description' ),
+					get_custom_header(),
+					get_theme_mod( 'custom_logo' ),
+					file_get_contents( locate_template( array( 'template-parts/header/header-image.php' ) ) ),
+					file_get_contents( locate_template( array( 'template-parts/header/site-branding.php' ) ) ),
+				)
+			)
+		);
+	}
+	return $entry;
 } );
+
 
 add_filter( 'widget_text_content', 'wp_make_content_images_responsive' );
 
