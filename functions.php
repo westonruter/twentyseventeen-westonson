@@ -5,11 +5,28 @@
  * @package Twenty_Seventeen_Westonson
  */
 
+/**
+ * Check if theme has service worker streaming enabled.
+ *
+ * To enable streaming, do the following via WP-CLI:
+ *
+ *     wp theme mod set service_worker_streaming true
+ *
+ * @return bool Whether streaming enabled.
+ */
+function twentyseventeen_has_service_worker_streaming() {
+	return rest_sanitize_boolean( get_theme_mod( 'service_worker_streaming', false ) );
+}
+
 add_theme_support( 'amp', array(
-	'paired' => false, // Needed in order to support service_worker_streaming.
+	'paired' => ! (
+		twentyseventeen_has_service_worker_streaming()
+	),
 ) );
 
-add_theme_support( 'service_worker_streaming' );
+if ( twentyseventeen_has_service_worker_streaming() ) {
+	add_theme_support( 'service_worker_streaming' );
+}
 
 // Make sure the precached streaming header varies by the header logo and header image.
 add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
