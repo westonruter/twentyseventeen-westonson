@@ -5,11 +5,42 @@
  * @package Twenty_Seventeen_Westonson
  */
 
-add_theme_support( 'amp', array(
-	'paired' => false, // Needed in order to support service_worker_streaming.
-) );
+/*
+ * To enable service worker streaming, do:
+ *
+ *     wp theme mod set service_worker_navigation streaming
+ *
+ * Or to enable AMP app shell, do:
+ *
+ *     wp theme mod set service_worker_navigation amp_app_shell
+ */
+add_action( 'after_setup_theme', function() {
 
-add_theme_support( 'service_worker_streaming' );
+	$amp_native_mode = get_theme_mod( 'amp_native_mode', false );
+	$has_streaming   = 'streaming' === get_theme_mod( 'service_worker_navigation' );
+	$has_app_shell   = 'amp_app_shell' === get_theme_mod( 'service_worker_navigation' );
+
+	$support_args = array(
+		'paired' => ! (
+			$amp_native_mode
+			||
+			$has_streaming
+			||
+			$has_app_shell
+		),
+	);
+
+	if ( $has_app_shell ) {
+		$support_args['app_shell'] = array(
+			'content_element_id' => 'content',
+		);
+	} elseif ( $has_streaming ) {
+		add_theme_support( 'service_worker_streaming' );
+	}
+
+	add_theme_support( 'amp', $support_args );
+} );
+
 
 // Make sure the precached streaming header varies by the header logo and header image.
 add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
