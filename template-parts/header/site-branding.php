@@ -23,6 +23,15 @@ if ( WP_Service_Worker_Navigation_Routing_Component::is_streaming_header() ) {
 		#stream-loading-progressbar {
 			position: absolute;
 			bottom: 0;
+			left: 0;
+			right: 0;
+		}
+		@media screen and (max-width: 48em) {
+			#stream-loading-progressbar {
+				position: absolute;
+				top: 0;
+				bottom: auto;
+			}
 		}
 
 		@-webkit-keyframes primary-indeterminate-translate {
