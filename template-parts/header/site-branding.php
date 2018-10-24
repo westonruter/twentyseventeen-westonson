@@ -7,7 +7,7 @@
 
 require get_template_directory() . '/template-parts/header/site-branding.php';
 
-if ( ! class_exists( 'WP_Service_Worker_Navigation_Routing_Component' ) ) {
+if ( ! class_exists( 'WP_Service_Worker_Navigation_Routing_Component' ) || ! current_theme_supports( 'service_worker_streaming' ) ) {
 	return;
 }
 
