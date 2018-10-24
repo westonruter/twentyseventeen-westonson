@@ -6,7 +6,6 @@
  * and the comment form.
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
- * @todo apply changes
  *
  * @package Twenty_Seventeen_Westonson
  */

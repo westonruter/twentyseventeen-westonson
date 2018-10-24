@@ -6,11 +6,11 @@
  */
 
 /*
- * To enable service worker streaming, do:
+ * To enable service worker streaming, use WP-CLI as follows:
  *
  *     wp theme mod set service_worker_navigation streaming
  *
- * To enable comments live list, do:
+ * To enable AMP comments live list <https://github.com/Automattic/amp-wp/wiki/Commenting#live-commenting-using-a-live-list>, do:
  *
  *     wp theme mod set amp_comments_live_list true
  */
