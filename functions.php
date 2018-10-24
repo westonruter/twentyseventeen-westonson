@@ -32,7 +32,7 @@ add_action( 'after_setup_theme', function() {
 
 	if ( $has_app_shell ) {
 		$support_args['app_shell'] = array(
-			'content_element_id' => 'content',
+			'shadow_root_xpath' => '//div[ contains( @class, "site-content-contain" ) ]',
 		);
 	} elseif ( $has_streaming ) {
 		add_theme_support( 'service_worker_streaming' );
