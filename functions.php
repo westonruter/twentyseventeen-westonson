@@ -161,7 +161,7 @@ add_action( 'wp_enqueue_scripts', function() {
 
 	// Prevent doubled margins and padding for content element which is the AMP Shadow document root.
 	if ( method_exists( 'AMP_Theme_Support', 'get_requested_app_shell_component' ) && 'inner' === AMP_Theme_Support::get_requested_app_shell_component() ) {
-		wp_add_inline_style( 'twentyseventeen-style', ".page #content.site-content { padding: 0; margin: 0; }" );
+		wp_add_inline_style( 'twentyseventeen-style', "body:not(#_) #content.site-content { padding: 0; margin: 0; }" );
 	}
 }, 20 );
 
