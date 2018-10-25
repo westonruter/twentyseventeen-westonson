@@ -27,16 +27,16 @@ add_action( 'after_setup_theme', function() {
 
 	$amp_mode               = get_theme_mod( 'amp_mode', 'paired' );
 	$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
-	$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 	$has_app_shell          = 'amp_app_shell' === get_theme_mod( 'service_worker_navigation' );
+	$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
 	$support_args = array(
-		'paired' => ! (
-			'native' === $amp_mode
+		'paired' => (
+			'paired' === $amp_mode
 			||
-			$has_streaming
+			$has_app_shell // Requires paired.
 			||
-			$has_app_shell
+			! $has_streaming // Requires native.
 		),
 	);
 
