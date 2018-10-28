@@ -42,3 +42,25 @@ Use it to make something cool, have fun, and share what you've learned with othe
 	user-select: none;
 	cursor: pointer;
 }
+
+/*
+ * Account for .single-featured-image-header being moved inside .site-content,
+ * so move padding-top from .site-content to the .content-area element.
+ */
+.site-content {
+	padding-top: 0;
+}
+.content-area {
+	padding-top: 2.5em;
+}
+.twentyseventeen-front-page .content-area {
+	padding: 0;
+}
+@media screen and (min-width: 48em) {
+	.site-content {
+		padding-top: 0;
+	}
+	.content-area {
+		padding-top: 5.5em;
+	}
+}
