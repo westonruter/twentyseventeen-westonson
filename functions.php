@@ -45,9 +45,7 @@ add_action( 'after_setup_theme', function() {
 	}
 
 	if ( $has_app_shell ) {
-		$support_args['app_shell'] = array(
-			'content_element_id' => 'content',
-		);
+		$support_args['app_shell'] = array();
 	} elseif ( $has_streaming ) {
 		add_theme_support( 'service_worker_streaming' );
 	}
@@ -172,11 +170,6 @@ add_action( 'wp_enqueue_scripts', function() {
 		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
-
-	// Prevent doubled margins and padding for content element which is the AMP Shadow document root.
-	if ( method_exists( 'AMP_Theme_Support', 'get_requested_app_shell_component' ) && 'inner' === AMP_Theme_Support::get_requested_app_shell_component() ) {
-		wp_add_inline_style( 'twentyseventeen-style', 'body:not(#_) #content.site-content { padding: 0; margin: 0; }' );
-	}
 }, 20 );
 
 add_action( 'customize_register', function( WP_Customize_Manager $wp_customize ) {
