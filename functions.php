@@ -170,6 +170,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
+	wp_styles()->registered['twentyseventeen-style']->ver    = '2018-10-28';
 }, 20 );
 
 add_action( 'customize_register', function( WP_Customize_Manager $wp_customize ) {
