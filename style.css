@@ -50,17 +50,14 @@ Use it to make something cool, have fun, and share what you've learned with othe
 .site-content {
 	padding-top: 0;
 }
-.content-area {
+.wrap {
 	padding-top: 2.5em;
-}
-.twentyseventeen-front-page .content-area {
-	padding: 0;
 }
 @media screen and (min-width: 48em) {
 	.site-content {
 		padding-top: 0;
 	}
-	.content-area {
+	.wrap {
 		padding-top: 5.5em;
 	}
 }
