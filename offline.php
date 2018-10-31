@@ -22,7 +22,11 @@ get_header(); ?>
 				</header><!-- .page-header -->
 
 				<div class="page-content">
-					<p><?php esc_html_e( 'Please check your internet connection, and try again.', 'twentyseventeen-westonson' ); ?></p>
+					<?php
+					if ( function_exists( 'wp_service_worker_error_message_placeholder' ) ) {
+						wp_service_worker_error_message_placeholder();
+					}
+					?>
 				</div><!-- .page-content -->
 			</section><!-- .error-offline -->
 		</main><!-- #main -->
