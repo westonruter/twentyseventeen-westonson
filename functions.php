@@ -44,6 +44,11 @@ add_action( 'after_setup_theme', function() {
 	add_theme_support( 'amp', $support_args );
 } );
 
+add_filter( 'amp_content_sanitizers', function( $sanitizers ) {
+	require_once __DIR__ . '/class-comment-form-yesvalidate-sanitizer.php';
+	$sanitizers['Twenty_Seventeen_Westonson\Comment_Form_YesValidate_Sanitizer'] = array();
+	return $sanitizers;
+} );
 
 // Make sure the precached streaming header varies by the header logo and header image.
 add_filter( 'wp_streaming_header_precache_entry', function( $entry ) {
