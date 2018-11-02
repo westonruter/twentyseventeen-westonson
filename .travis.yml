@@ -1,0 +1,32 @@
+sudo: false
+
+language:
+    - php
+    - node_js
+
+php:
+    - 7.2
+
+node_js:
+    - stable
+
+branches:
+    only:
+        - develop
+
+install:
+    - export DEV_LIB_PATH=dev-lib
+    - export DEFAULT_BASE_BRANCH=develop
+    - export DEV_LIB_SKIP=xmllint
+    - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .travis.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .travis.yml ) ); fi
+    - if [ ! -e "$DEV_LIB_PATH" ]; then git clone https://github.com/xwp/wp-dev-lib.git $DEV_LIB_PATH; fi
+    - source $DEV_LIB_PATH/travis.install.sh
+
+script:
+    - source $DEV_LIB_PATH/travis.script.sh
+
+after_script:
+    - source $DEV_LIB_PATH/travis.after_script.sh
+
+after_success:
+    - if [ $TRAVIS_BRANCH == 'develop' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then npm install shelljs path got && node bin/trigger-deploy.js; fi
