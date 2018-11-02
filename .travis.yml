@@ -12,11 +12,11 @@ node_js:
 
 branches:
     only:
-        - develop
+        - master
 
 install:
     - export DEV_LIB_PATH=dev-lib
-    - export DEFAULT_BASE_BRANCH=develop
+    - export DEFAULT_BASE_BRANCH=master
     - export DEV_LIB_SKIP=xmllint
     - if [ ! -e "$DEV_LIB_PATH" ] && [ -L .travis.yml ]; then export DEV_LIB_PATH=$( dirname $( readlink .travis.yml ) ); fi
     - if [ ! -e "$DEV_LIB_PATH" ]; then git clone https://github.com/xwp/wp-dev-lib.git $DEV_LIB_PATH; fi
@@ -29,4 +29,4 @@ after_script:
     - source $DEV_LIB_PATH/travis.after_script.sh
 
 after_success:
-    - if [ $TRAVIS_BRANCH == 'develop' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then npm install shelljs path got && node bin/trigger-deploy.js; fi
+    - if [ $TRAVIS_BRANCH == 'master' ] && [ $TRAVIS_PULL_REQUEST == 'false' ]; then npm install shelljs path got && node bin/trigger-deploy.js; fi
