@@ -1,3 +1,13 @@
+window.addEventListener( 'wp-amp-app-shell-navigate', ( event ) => {
+	console.info( event.type, event.detail );
+} );
+window.addEventListener( 'wp-amp-app-shell-load', ( event ) => {
+	console.info( event.type, event.detail );
+} );
+window.addEventListener( 'wp-amp-app-shell-ready', ( event ) => {
+	console.info( event.type, event.detail );
+} );
+
 window.addEventListener( 'click', function( e ) {
 	var node = e.target;
 	var homeUrl = window.wpPageTransitions.homeUrl;
