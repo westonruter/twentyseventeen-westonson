@@ -199,31 +199,132 @@ body.page:not(.twentyseventeen-front-page) .entry-title::after {
 /*--------------------------------------------------------------
 ## Page Transitions
 --------------------------------------------------------------*/
-.site-content {
-	transition: opacity 0.3s linear 0s;
+.has-page-transitions .site-content {
+	-webkit-transition: opacity 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	-moz-transition: opacity 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	-ms-transition: opacity 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	transition: opacity 480ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.loading .site-content {
+.has-page-transitions .page-transition .site-content {
 	opacity: 0;
-	transition: opacity 0.3s linear 0s;
+}
+.has-page-transitions .page-transition .site-header {
+	z-index: 100;
 }
 
-.loading .custom-header-media,
-.loading .site-branding,
-.loading .navigation-top {
-	transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+.has-page-transitions .page-transition .site-header,
+.has-page-transitions.has-page-transitions .has-header-image .custom-header-media img {
+	-webkit-transition: transform 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	-moz-transition: transform 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	-ms-transition: transform 480ms cubic-bezier(0.23, 1, 0.32, 1);
+	transition: transform 480ms cubic-bezier(0.23, 1, 0.32, 1);
 }
 
-.twentyseventeen-front-page.loading .custom-header-media,
-.twentyseventeen-front-page.loading .site-branding,
-.twentyseventeen-front-page.loading .navigation-top {
-	transform: translateY(-75vh);
+.has-page-transitions .has-header-image:not(.twentyseventeen-front-page) .site-header {
+	margin-top: -45vh;
 }
 
-
-.loading.homeward .custom-header-media,
-.loading.homeward .site-branding,
-.loading.homeward .navigation-top {
-	transform: translateY(70vh);
+.has-page-transitions .home-page-transition:not(.twentyseventeen-front-page) .site-header {
+	-webkit-transform: translateY(45vh);
+	-moz-transform: translateY(45vh);
+	-ms-transform: translateY(45vh);
+	transform: translateY(45vh);
 }
 
+.has-page-transitions .page-transition.twentyseventeen-front-page .site-header {
+	-webkit-transform: translateY(-45vh);
+	-moz-transform: translateY(-45vh);
+	-ms-transform: translateY(-45vh);
+	transform: translateY(-45vh);
+}
+
+.has-page-transitions .custom-header {
+	display: block;
+	height: auto;
+	margin-bottom: 0 !important;
+}
+
+.has-page-transitions.has-page-transitions .has-header-image .custom-header-media {
+	position: relative;
+	top: auto;
+	right: auto;
+	bottom: auto;
+	left: auto;
+	height: 500px;
+	height: 75vh;
+	max-height: 100%;
+	overflow: hidden;
+}
+
+.has-page-transitions .custom-header-media::before {
+	height: 45%;
+}
+
+.has-page-transitions.has-page-transitions .has-header-image .custom-header-media img {
+	position: absolute;
+	height: auto;
+	left: 50%;
+	max-width: 1000%;
+	min-height: 100%;
+	min-width: 100%;
+	min-width: 100vw;
+	width: auto;
+	top: 50%;
+	padding-bottom: 1px;
+	-ms-transform: translateX(-50%) translateY(-50%);
+	-moz-transform: translateX(-50%) translateY(-50%);
+	-webkit-transform: translateX(-50%) translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
+}
+
+.has-page-transitions.has-page-transitions .has-header-image .site-branding {
+	bottom: 0;
+	display: block;
+	left: 0;
+	height: auto;
+	padding-top: 0;
+	margin-bottom: 0 !important;
+	position: absolute;
+	width: 100%;
+}
+
+@media screen and (min-width: 48em) {
+	.has-page-transitions.has-page-transitions .has-header-image .custom-header-media {
+		height: calc(100vh - 32px);
+	}
+
+	.has-page-transitions .custom-header-media::before {
+		height: 33%;
+	}
+
+	.has-page-transitions .has-header-image:not(.twentyseventeen-front-page) .site-header {
+		margin-top: -66vh;
+	}
+
+	.has-page-transitions .home-page-transition:not(.twentyseventeen-front-page) .site-header {
+		-webkit-transform: translateY(66vh);
+		-moz-transform: translateY(66vh);
+		-ms-transform: translateY(66vh);
+		transform: translateY(66vh);
+	}
+
+	.has-page-transitions .page-transition.twentyseventeen-front-page .site-header {
+		-webkit-transform: translateY(-66vh);
+		-moz-transform: translateY(-66vh);
+		-ms-transform: translateY(-66vh);
+		transform: translateY(-66vh);
+	}
+
+	.has-page-transitions .has-header-image:not(.twentyseventeen-front-page):not(.home-page-transition) .custom-header-media img,
+	.has-page-transitions .page-transition.has-header-image.twentyseventeen-front-page .custom-header-media img {
+		-webkit-transform: translateX(-50%) translateY(calc(-50% + 33vh));
+		-moz-transform: translateX(-50%) translateY(calc(-50% + 33vh));
+		-ms-transform: translateX(-50%) translateY(calc(-50% + 33vh));
+		transform: translateX(-50%) translateY(calc(-50% + 33vh));
+	}
+
+	.has-page-transitions.has-page-transitions .has-header-image .site-branding {
+		bottom: 78px;
+	}
+}
