@@ -259,7 +259,10 @@ if ( function_exists( 'is_amp_endpoint' ) ) {
 	} );
 }
 
-add_action( 'wp_enqueue_scripts', 'twentyseventeen_westonson_header_js' );
-function twentyseventeen_westonson_header_js() {
-	wp_enqueue_script( 'header-animation', get_stylesheet_directory_uri() . '/header-animation.js', array(), null, true );
+// Add page transitions JS code.
+function twentyseventeen_westonson_add_page_transitions_js() {
+	wp_register_script( 'page-transitions', get_stylesheet_directory_uri() . '/assets/js/page-transitions.js', array(), null, false );
+	wp_localize_script( 'page-transitions', 'wpPageTransitions', array( 'homeUrl' => get_home_url() ) );
+	wp_enqueue_script( 'page-transitions' );
 }
+add_action( 'wp_enqueue_scripts', 'twentyseventeen_westonson_add_page_transitions_js' );
