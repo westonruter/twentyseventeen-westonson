@@ -18,18 +18,25 @@
  * To enable AMP comments live list <https://github.com/Automattic/amp-wp/wiki/Commenting#live-commenting-using-a-live-list>, do:
  *
  *     wp theme mod set amp_comments_live_list true
+ *
+ * Or to enable AMP app shell, do:
+ *
+ *     wp theme mod set service_worker_navigation amp_app_shell
  */
 add_action( 'after_setup_theme', function() {
 
 	$amp_mode               = get_theme_mod( 'amp_mode', 'paired' );
 	$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
+	$has_app_shell          = 'amp_app_shell' === get_theme_mod( 'service_worker_navigation' );
 	$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
 	$support_args = array(
-		'paired' => ! (
-			'native' === $amp_mode
+		'paired' => (
+			'paired' === $amp_mode
 			||
-			$has_streaming
+			$has_app_shell // Requires paired.
+			||
+			! $has_streaming // Requires native.
 		),
 	);
 
@@ -37,7 +44,9 @@ add_action( 'after_setup_theme', function() {
 		$support_args['comments_live_list'] = true;
 	}
 
-	if ( $has_streaming ) {
+	if ( $has_app_shell ) {
+		$support_args['app_shell'] = array();
+	} elseif ( $has_streaming ) {
 		add_theme_support( 'service_worker_streaming' );
 	}
 
@@ -166,6 +175,7 @@ add_action( 'wp_enqueue_scripts', function() {
 		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
+	wp_styles()->registered['twentyseventeen-style']->ver    = '2018-10-28';
 }, 20 );
 
 add_action( 'customize_register', function( WP_Customize_Manager $wp_customize ) {
@@ -247,4 +257,9 @@ if ( function_exists( 'is_amp_endpoint' ) ) {
 		}
 		return $entry;
 	} );
+}
+
+add_action( 'wp_enqueue_scripts', 'twentyseventeen_westonson_header_js' );
+function twentyseventeen_westonson_header_js() {
+	wp_enqueue_script( 'header-animation', get_stylesheet_directory_uri() . '/header-animation.js', array(), null, true );
 }
