@@ -166,7 +166,7 @@ add_action( 'wp_head', function() {
 	}
 }, 1 );
 
-// Make parent theme's stylesheet a dependency for this theme's stylesheet.
+// Make parent theme's stylesheet a dependency for this theme's stylesheet, and add custom scripts.
 add_action( 'wp_enqueue_scripts', function() {
 	wp_register_style(
 		'twentyseventeen-parent-style',
@@ -175,7 +175,14 @@ add_action( 'wp_enqueue_scripts', function() {
 		'1.1'
 	);
 	wp_styles()->registered['twentyseventeen-style']->deps[] = 'twentyseventeen-parent-style';
-	wp_styles()->registered['twentyseventeen-style']->ver    = '2018-10-28';
+	wp_styles()->registered['twentyseventeen-style']->ver    = md5( file_get_contents( get_stylesheet_directory() . '/style.css' ) );
+
+	if ( ! function_exists( 'is_amp_endpoint' ) || ! is_amp_endpoint() ) {
+		// Add page transitions JS code.
+		$version = md5( file_get_contents( get_stylesheet_directory() . '/assets/js/page-transitions.js' ) );
+		wp_enqueue_script( 'twentyseventeen-page-transitions', get_stylesheet_directory_uri() . '/assets/js/page-transitions.js', array(), $version, false );
+		wp_localize_script( 'twentyseventeen-page-transitions', 'wpPageTransitions', array( 'homeUrl' => get_home_url() ) );
+	}
 }, 20 );
 
 add_action( 'customize_register', function( WP_Customize_Manager $wp_customize ) {
@@ -228,6 +235,7 @@ add_action( 'wp_enqueue_scripts', function() {
 	$precached_scripts = array(
 		'twentyseventeen-skip-link-focus-fix',
 		'twentyseventeen-navigation',
+		'twentyseventeen-page-transitions',
 		'twentyseventeen-global',
 	);
 	foreach ( $precached_scripts as $handle ) {
@@ -258,11 +266,3 @@ if ( function_exists( 'is_amp_endpoint' ) ) {
 		return $entry;
 	} );
 }
-
-// Add page transitions JS code.
-function twentyseventeen_westonson_add_page_transitions_js() {
-	wp_register_script( 'page-transitions', get_stylesheet_directory_uri() . '/assets/js/page-transitions.js', array(), null, false );
-	wp_localize_script( 'page-transitions', 'wpPageTransitions', array( 'homeUrl' => get_home_url() ) );
-	wp_enqueue_script( 'page-transitions' );
-}
-add_action( 'wp_enqueue_scripts', 'twentyseventeen_westonson_add_page_transitions_js' );
