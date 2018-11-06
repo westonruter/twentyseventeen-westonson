@@ -13,6 +13,156 @@ This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned with others.
 */
 
+/*--------------------------------------------------------------
+## Typography
+--------------------------------------------------------------*/
+body {
+	font-family: 'Karla', 'Helvetica Neue', helvetica, arial, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: #666666;
+	font-family: 'Rubik', 'Libre Franklin', helvetica, arial, sans-serif;
+}
+
+.entry-content {
+	font-size: 20px;
+	font-size: 1.25rem;
+}
+
+/*--------------------------------------------------------------
+## Page Titles
+--------------------------------------------------------------*/
+
+/* Visually hide page title on front page*/
+.home.page-template-default .entry-header .entry-title {
+	clip: rect(1px, 1px, 1px, 1px);
+	height: 1px;
+	overflow: hidden;
+	position: absolute !important;
+	width: 1px;
+	word-wrap: normal !important; /* Many screen reader and browser combinations announce broken words as they would appear visually. */
+}
+
+.page .panel-content .entry-title,
+.page-title,
+body.page:not(.twentyseventeen-front-page) .entry-title {
+	font-size: 32px;
+	font-size: 2rem;
+	font-weight: 700;
+	padding-bottom: 0.4rem;
+	position: relative;
+}
+
+.page .panel-content .entry-title::after,
+.page-title::after,
+body.page:not(.twentyseventeen-front-page) .entry-title::after {
+	background-color: #d8d8d8;
+	content: '';
+	display: block;
+	height: 6px;
+	left: 0;
+	position: absolute;
+	top: 100%;
+	width: 186px;
+}
+
+/*--------------------------------------------------------------
+## Site Branding
+--------------------------------------------------------------*/
+.site-title {
+	letter-spacing: 0.125em;
+}
+
+.site-description {
+	letter-spacing: 0.06em;
+}
+
+@media screen and ( min-width: 48em ) {
+	.site-description {
+		font-size: 23px;
+		font-size: 1.44rem;
+	}
+}
+
+@media screen and (min-width: 48em) {
+	.custom-logo-link {
+		padding-right: 1.125rem;
+	}
+}
+
+@media screen and (min-width: 71em) {
+	.custom-logo-link {
+		margin-left: -6.25rem;
+	}
+}
+
+/*--------------------------------------------------------------
+## Navigation
+--------------------------------------------------------------*/
+.main-navigation .menu a {
+	border-bottom: 3px solid transparent;
+	font-family: 'Rubik', 'Helvetica Neue', helvetica, arial, sans-serif;
+	font-size: 18px;
+	font-size: 1.125rem;
+	font-weight: 700;
+	letter-spacing: 0.03rem;
+	margin: 0 1.25em 0.2em;
+	padding: 1em 0 0.2em;
+	text-transform: uppercase;
+}
+
+.main-navigation .current-menu-item a,
+.main-navigation .current_page_parent a {
+	border-bottom-color: #4A90E2;
+}
+
+/*--------------------------------------------------------------
+## Page Layout
+--------------------------------------------------------------*/
+@media screen and (min-width: 30em) {
+	.page-one-column .panel-content .wrap {
+		max-width: 1000px;
+	}
+}
+
+.single-post:not(.has-sidebar) #primary,
+.page.page-one-column:not(.twentyseventeen-front-page) #primary,
+.archive.page-one-column:not(.has-sidebar) .page-header,
+.archive.page-one-column:not(.has-sidebar) #primary {
+	max-width: 1000px;
+}
+
+/*--------------------------------------------------------------
+## Account for .single-featured-image-header being moved inside .site-content,
+## so move padding-top from .site-content to the .content-area element.
+--------------------------------------------------------------*/
+.site-content {
+	padding-top: 0;
+}
+
+.wrap {
+	padding-top: 2.5em;
+}
+
+@media screen and (min-width: 48em) {
+	.site-content {
+		padding-top: 0;
+	}
+	.wrap {
+		padding-top: 5.5em;
+	}
+}
+
+
+/*--------------------------------------------------------------
+## Recent Posts
+--------------------------------------------------------------*/
 .recent-posts .hentry.has-post-thumbnail {
 	position: relative;
 }
@@ -34,7 +184,10 @@ Use it to make something cool, have fun, and share what you've learned with othe
 	}
 }
 
-/* Style error details on the 500.php template */
+
+/*--------------------------------------------------------------
+## Error Details on the 500.php template
+--------------------------------------------------------------*/
 #error-details > iframe {
 	width: 100%;
 }
@@ -42,3 +195,35 @@ Use it to make something cool, have fun, and share what you've learned with othe
 	user-select: none;
 	cursor: pointer;
 }
+
+/*--------------------------------------------------------------
+## Page Transitions
+--------------------------------------------------------------*/
+.site-content {
+	transition: opacity 0.3s linear 0s;
+}
+
+.loading .site-content {
+	opacity: 0;
+	transition: opacity 0.3s linear 0s;
+}
+
+.loading .custom-header-media,
+.loading .site-branding,
+.loading .navigation-top {
+	transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1) 0.2s;
+}
+
+.twentyseventeen-front-page.loading .custom-header-media,
+.twentyseventeen-front-page.loading .site-branding,
+.twentyseventeen-front-page.loading .navigation-top {
+	transform: translateY(-75vh);
+}
+
+
+.loading.homeward .custom-header-media,
+.loading.homeward .site-branding,
+.loading.homeward .navigation-top {
+	transform: translateY(70vh);
+}
+
