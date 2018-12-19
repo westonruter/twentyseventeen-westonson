@@ -1,7 +1,7 @@
 /*
 Theme Name: Twenty Seventeen Westonson
 Description: Weston's child (son) theme of Twenty Seventeen.
-Author: Weston Ruter, XWP
+Author: Weston Ruter
 Author URI: https://weston.ruter.net/
 Version: 1.1
 License: GNU General Public License v2 or later
@@ -41,4 +41,8 @@ Use it to make something cool, have fun, and share what you've learned with othe
 #error-details > summary {
 	user-select: none;
 	cursor: pointer;
+}
+
+.wp-block-quote > p:last-child {
+	margin-bottom: 0;
 }
