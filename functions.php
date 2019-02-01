@@ -284,11 +284,19 @@ add_filter(
 /*
  * As alternative to precaching scripts for offline page, just use the AMP version instead.
  * This has benefit of automatically excluding other scripts enqueued by plugins.
+ *
+ * To enable this, set the theme mod flag via WP-CLI:
+ *
+ *     wp theme mod set amp_offline_page true
  */
 if ( function_exists( 'is_amp_endpoint' ) ) {
 	add_filter(
 		'wp_offline_error_precache_entry',
 		function( $entry ) {
+			if ( ! rest_sanitize_boolean( get_theme_mod( 'amp_offline_page', false ) ) ) {
+				return $entry;
+			}
+
 			$supportable_templates = AMP_Theme_Support::get_supportable_templates();
 			if ( ! amp_is_canonical() && ! empty( $supportable_templates['is_offline']['supported'] ) && is_array( $entry ) ) {
 				$entry['url'] = add_query_arg( amp_get_slug(), '', $entry['url'] );
