@@ -60,10 +60,15 @@ add_action(
 		}
 
 		$support_args = array(
-			'paired' => ! (
+			'paired'         => ! (
 				'native' === $amp_mode
 				||
 				$has_streaming
+			),
+			'service_worker' => array(
+				'cdn_script_caching'   => true,
+				'google_fonts_caching' => true,
+				'image_caching'        => true,
 			),
 		);
 
