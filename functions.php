@@ -138,6 +138,17 @@ function twentyseventeen_westonson_print_preload_image_link( $image, $size = nul
 	echo ">\n";
 }
 
+/**
+ * Remove sizes attribute from images.
+ *
+ * @param array $attr Attributes.
+ * @return array Attributes.
+ */
+function twentyseventeen_remove_sizes_attribute( $attr ) {
+	unset( $attr['sizes'] );
+	return $attr;
+}
+
 // Preload stuff.
 add_action(
 	'wp_head',
