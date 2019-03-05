@@ -14,7 +14,9 @@
 
 		<?php if ( has_post_thumbnail() ) : ?>
 			<a href="<?php the_permalink(); ?>" class="featured-image-thumbnail">
+				<?php add_filter( 'wp_get_attachment_image_attributes', 'twentyseventeen_remove_sizes_attribute' ); ?>
 				<?php the_post_thumbnail( 'thumbnail' ); ?>
+				<?php remove_filter( 'wp_get_attachment_image_attributes', 'twentyseventeen_remove_sizes_attribute' ); ?>
 			</a>
 		<?php endif; ?>
 
