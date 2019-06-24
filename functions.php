@@ -75,6 +75,11 @@ add_action(
 	}
 );
 
+/*
+ * Remove novalidate attribute from comment form to force client-side form validation to prevent relying on server-side
+ * validation which will not be available during offline commenting. This ensures that background sync wont POST a
+ * comment that we already know to be invalid.
+ */
 add_filter(
 	'amp_content_sanitizers',
 	function( $sanitizers ) {
