@@ -89,6 +89,15 @@ add_filter(
 	}
 );
 
+// Ideally core would support this instead of requiring a hack like the above, as it would work in AMP and not-AMP alike.
+add_filter(
+	'comment_form_defaults',
+	function ( $defaults ) {
+		$defaults['novalidate_form'] = false;
+		return $defaults;
+	}
+);
+
 // Make sure the precached streaming header varies by the header logo and header image.
 add_filter(
 	'wp_streaming_header_precache_entry',

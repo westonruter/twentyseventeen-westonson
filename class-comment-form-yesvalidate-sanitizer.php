@@ -10,7 +10,11 @@ namespace Twenty_Seventeen_Westonson;
 /**
  * Class Comment_Form_YesValidate_Sanitizer
  *
- * Ensures that the novalidate attribute is removed from the comment form because client-side validation needs to be
+ * Remove novalidate attribute from comment form to force client-side form validation to prevent relying on server-side
+ * validation which will not be available during offline commenting. This ensures that background sync wont POST a
+ * comment that we already know to be invalid.
+ *
+ * @todo Core should allow for this to be omitted removed.
  */
 class Comment_Form_YesValidate_Sanitizer extends \AMP_Base_Sanitizer {
 
