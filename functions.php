@@ -33,11 +33,6 @@ add_filter(
 );
 
 /*
- * To change between Native and Paired modes for AMP, use WP-CLI to do:
- *
- *     wp theme mod set amp_mode paired
- *     wp theme mod set amp_mode native
- *
  * To enable service worker streaming (which also forces native mode), use WP-CLI as follows:
  *
  *     wp theme mod set service_worker_navigation streaming
@@ -50,7 +45,6 @@ add_action(
 	'after_setup_theme',
 	function() {
 
-		$amp_mode               = get_theme_mod( 'amp_mode', 'paired' );
 		$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
 		$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
@@ -60,16 +54,13 @@ add_action(
 		}
 
 		$support_args = array(
-			'paired'         => ! (
-				'native' === $amp_mode
-				||
-				$has_streaming
-			),
-			'service_worker' => array(
-				'cdn_script_caching'   => true,
-				'google_fonts_caching' => true,
-				'image_caching'        => true,
-			),
+			'paired' => true,
+		);
+
+		$support_args['service_worker'] = array(
+			'cdn_script_caching'   => true,
+			'google_fonts_caching' => true,
+			'image_caching'        => true,
 		);
 
 		if ( $amp_comments_live_list ) {
