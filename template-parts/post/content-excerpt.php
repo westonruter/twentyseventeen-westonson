@@ -8,15 +8,36 @@
  */
 ?>
 
-<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+<article id="post-<?php the_ID(); ?>" <?php post_class( 'content-excerpt' ); ?>>
 
 	<header class="entry-header">
 
 		<?php if ( has_post_thumbnail() ) : ?>
 			<a href="<?php the_permalink(); ?>" class="featured-image-thumbnail">
-				<?php add_filter( 'wp_get_attachment_image_attributes', 'twentyseventeen_remove_sizes_attribute' ); ?>
-				<?php the_post_thumbnail( 'thumbnail' ); ?>
-				<?php remove_filter( 'wp_get_attachment_image_attributes', 'twentyseventeen_remove_sizes_attribute' ); ?>
+				<?php
+				$add_fixed_layout = function( $attributes ) {
+					$attributes['data-amp-layout'] = 'fixed';
+					return $attributes;
+				};
+				$add_media_min_width_1100px = function( $attributes ) {
+					$attributes['media'] = '(min-width: 1100px)';
+					return $attributes;
+				};
+				$add_media_max_width_1100px = function( $attributes ) {
+					$attributes['media'] = '(max-width: 1099px)';
+					return $attributes;
+				};
+
+				add_filter( 'wp_get_attachment_image_attributes', $add_fixed_layout );
+				add_filter( 'wp_get_attachment_image_attributes', $add_media_min_width_1100px );
+				the_post_thumbnail( 'thumbnail' );
+				remove_filter( 'wp_get_attachment_image_attributes', $add_media_min_width_1100px );
+				remove_filter( 'wp_get_attachment_image_attributes', $add_fixed_layout );
+
+				add_filter( 'wp_get_attachment_image_attributes', $add_media_max_width_1100px );
+				the_post_thumbnail( 'post-thumbnail' );
+				remove_filter( 'wp_get_attachment_image_attributes', $add_media_max_width_1100px );
+				?>
 			</a>
 		<?php endif; ?>
 

@@ -5,6 +5,33 @@
  * @package Twenty_Seventeen_Westonson
  */
 
+add_action(
+	'after_setup_theme',
+	function() {
+		// Set the default content width.
+		$GLOBALS['content_width'] = 1000;
+	},
+	11
+);
+
+add_filter(
+	'twentyseventeen_content_width',
+	function( $content_width ) {
+		$page_layout = get_theme_mod( 'page_layout' );
+
+		$is_single_column = (
+			( 'one-column' === $page_layout && ( twentyseventeen_is_frontpage() || is_page() ) )
+			||
+			( is_single() && ! is_active_sidebar( 'sidebar-1' ) )
+		);
+		if ( $is_single_column ) {
+			$content_width = 1348;
+		}
+
+		return $content_width;
+	}
+);
+
 /*
  * To change between Native and Paired modes for AMP, use WP-CLI to do:
  *
@@ -26,6 +53,11 @@ add_action(
 		$amp_mode               = get_theme_mod( 'amp_mode', 'paired' );
 		$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
 		$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
+
+		// Abort if classic mode.
+		if ( 'classic' === $amp_mode ) {
+			return;
+		}
 
 		$support_args = array(
 			'paired' => ! (
@@ -138,17 +170,6 @@ function twentyseventeen_westonson_print_preload_image_link( $image, $size = nul
 	echo ">\n";
 }
 
-/**
- * Remove sizes attribute from images.
- *
- * @param array $attr Attributes.
- * @return array Attributes.
- */
-function twentyseventeen_remove_sizes_attribute( $attr ) {
-	unset( $attr['sizes'] );
-	return $attr;
-}
-
 // Preload stuff.
 add_action(
 	'wp_head',
@@ -246,7 +267,7 @@ add_action(
 add_filter(
 	'body_class',
 	function( $body_classes ) {
-		if ( ( function_exists( 'is_500' ) && is_500() ) || ( function_exists( 'is_offline' ) && is_offline() ) ) {
+		if ( is_404() || ( function_exists( 'is_500' ) && is_500() ) || ( function_exists( 'is_offline' ) && is_offline() ) ) {
 			$body_classes = array_diff( $body_classes, array( 'has-sidebar' ) );
 		}
 		return $body_classes;

@@ -13,6 +13,19 @@ This theme, like WordPress, is licensed under the GPL.
 Use it to make something cool, have fun, and share what you've learned with others.
 */
 
+
+@media screen and (min-width: 1100px) {
+	.hentry.content-excerpt.has-post-thumbnail {
+		margin-left: 170px;
+		position: relative;
+		min-height: 200px;
+	}
+	.hentry.content-excerpt.has-post-thumbnail .wp-post-image {
+		position: absolute;
+		left: -170px;
+	}
+}
+
 .recent-posts .hentry.has-post-thumbnail {
 	position: relative;
 }
@@ -23,7 +36,7 @@ Use it to make something cool, have fun, and share what you've learned with othe
 
 @media screen and (max-width: 48em) {
 	.recent-posts .hentry.has-post-thumbnail .wp-post-image {
-		position: static;
+		position: relative;
 		left: auto;
 		float: right;
 		margin-left: 2em;
@@ -32,6 +45,10 @@ Use it to make something cool, have fun, and share what you've learned with othe
 	.recent-posts .hentry.has-post-thumbnail .featured-image-thumbnail ~ .entry-title {
 		clear: none;
 	}
+}
+
+.single-featured-image-header amp-img {
+	vertical-align: middle;
 }
 
 /* Style error details on the 500.php template */
@@ -45,4 +62,41 @@ Use it to make something cool, have fun, and share what you've learned with othe
 
 .wp-block-quote > p:last-child {
 	margin-bottom: 0;
+}
+
+@media screen and (min-width: 30em) {
+	.page-one-column .panel-content .wrap {
+		max-width: 1444px;
+	}
+}
+
+@media screen and (min-width: 48em) {
+	.navigation-top > .wrap,
+	.wrap {
+		max-width: 1444px;
+	}
+
+	.site-content {
+		padding-top: 3em;
+	}
+
+	.single-post:not(.has-sidebar) #primary,
+	.page.page-one-column:not(.twentyseventeen-front-page) #primary,
+	.archive.page-one-column:not(.has-sidebar) .page-header,
+	.archive.page-one-column:not(.has-sidebar) #primary {
+		max-width: none;
+	}
+
+	.has-sidebar:not(.error404) #primary {
+		padding-right: 3em;
+		width: calc( 100% - 300px );
+	}
+
+	.has-sidebar #secondary {
+		width: 300px;
+	}
+}
+
+.comment-list .comment-body {
+	margin-left: 65px;
 }
