@@ -48,11 +48,6 @@ add_action(
 		$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
 		$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
-		// Abort if classic mode.
-		if ( 'classic' === $amp_mode ) {
-			return;
-		}
-
 		$support_args = array(
 			'paired' => true,
 		);
