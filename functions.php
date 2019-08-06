@@ -33,11 +33,6 @@ add_filter(
 );
 
 /*
- * To change between Native and Paired modes for AMP, use WP-CLI to do:
- *
- *     wp theme mod set amp_mode paired
- *     wp theme mod set amp_mode native
- *
  * To enable service worker streaming (which also forces native mode), use WP-CLI as follows:
  *
  *     wp theme mod set service_worker_navigation streaming
@@ -50,21 +45,17 @@ add_action(
 	'after_setup_theme',
 	function() {
 
-		$amp_mode               = get_theme_mod( 'amp_mode', 'paired' );
 		$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
 		$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
-		// Abort if classic mode.
-		if ( 'classic' === $amp_mode ) {
-			return;
-		}
-
 		$support_args = array(
-			'paired' => ! (
-				'native' === $amp_mode
-				||
-				$has_streaming
-			),
+			'paired' => true,
+		);
+
+		$support_args['service_worker'] = array(
+			'cdn_script_caching'   => true,
+			'google_fonts_caching' => true,
+			'image_caching'        => true,
 		);
 
 		if ( $amp_comments_live_list ) {
@@ -79,12 +70,26 @@ add_action(
 	}
 );
 
+/*
+ * Remove novalidate attribute from comment form to force client-side form validation to prevent relying on server-side
+ * validation which will not be available during offline commenting. This ensures that background sync wont POST a
+ * comment that we already know to be invalid.
+ */
 add_filter(
 	'amp_content_sanitizers',
 	function( $sanitizers ) {
 		require_once __DIR__ . '/class-comment-form-yesvalidate-sanitizer.php';
 		$sanitizers['Twenty_Seventeen_Westonson\Comment_Form_YesValidate_Sanitizer'] = array();
 		return $sanitizers;
+	}
+);
+
+// Ideally core would support this instead of requiring a hack like the above, as it would work in AMP and not-AMP alike.
+add_filter(
+	'comment_form_defaults',
+	function ( $defaults ) {
+		$defaults['novalidate_form'] = false;
+		return $defaults;
 	}
 );
 
