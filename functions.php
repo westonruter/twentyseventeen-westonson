@@ -33,10 +33,6 @@ add_filter(
 );
 
 /*
- * To enable service worker streaming (which also forces native mode), use WP-CLI as follows:
- *
- *     wp theme mod set service_worker_navigation streaming
- *
  * To enable AMP comments live list <https://github.com/Automattic/amp-wp/wiki/Commenting#live-commenting-using-a-live-list>, do:
  *
  *     wp theme mod set amp_comments_live_list true
@@ -46,7 +42,6 @@ add_action(
 	function() {
 
 		$amp_comments_live_list = rest_sanitize_boolean( get_theme_mod( 'amp_comments_live_list', false ) );
-		$has_streaming          = 'streaming' === get_theme_mod( 'service_worker_navigation' );
 
 		$support_args = array(
 			'paired' => true,
@@ -60,10 +55,6 @@ add_action(
 
 		if ( $amp_comments_live_list ) {
 			$support_args['comments_live_list'] = true;
-		}
-
-		if ( $has_streaming ) {
-			add_theme_support( 'service_worker_streaming' );
 		}
 
 		add_theme_support( 'amp', $support_args );
@@ -92,32 +83,6 @@ add_filter(
 		return $defaults;
 	}
 );
-
-// Make sure the precached streaming header varies by the header logo and header image.
-add_filter(
-	'wp_streaming_header_precache_entry',
-	function( $entry ) {
-		if ( isset( $entry['revision'] ) ) {
-			$entry['revision'] .= md5(
-				wp_json_encode(
-					// Put everything here that can cause the streaming header to vary.
-					array(
-						'v1',
-						home_url( '/' ),
-						get_bloginfo( 'name' ),
-						get_bloginfo( 'description' ),
-						get_custom_header(),
-						get_theme_mod( 'custom_logo' ),
-						file_get_contents( locate_template( array( 'template-parts/header/header-image.php' ) ) ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-						file_get_contents( locate_template( array( 'template-parts/header/site-branding.php' ) ) ), // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-					)
-				)
-			);
-		}
-		return $entry;
-	}
-);
-
 
 add_filter( 'widget_text_content', 'wp_make_content_images_responsive' );
 
